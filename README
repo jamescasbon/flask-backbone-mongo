@@ -1,0 +1,4 @@
+Conversion of Jérôme Gravel-Niquet's todo app from local storage to mongodb.  
+Uses flask for request handling.
+
+Requires backbone > 0.33 to use idAttribute option. 

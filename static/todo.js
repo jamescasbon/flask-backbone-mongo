@@ -12,6 +12,8 @@ $(function(){
   // Our basic **Todo** model has `content`, `order`, and `done` attributes.
   window.Todo = Backbone.Model.extend({
 
+    idAttribute: "_id",
+
     // If you don't provide a todo, one will be provided for you.
     EMPTY: "empty todo...",
 
@@ -36,10 +38,7 @@ $(function(){
   });
 
   // Todo Collection
-  // ---------------
-
-  // The collection of todos is backed by *localStorage* instead of a remote
-  // server.
+  // ---------------Ï
   window.TodoList = Backbone.Collection.extend({
 
     // Reference to this collection's model.
@@ -182,11 +181,12 @@ $(function(){
 
       this.input    = this.$("#new-todo");
 
-      Todos.bind('add',     this.addOne);
-      Todos.bind('refresh', this.addAll);
-      Todos.bind('all',     this.render);
-
-      Todos.fetch();
+      var handlers = {
+          "success": this.addAll,
+          "error": function() {console.log("fetch failed")}
+         };
+      
+      Todos.fetch(handlers);
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
@@ -203,12 +203,14 @@ $(function(){
     // Add a single todo item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
     addOne: function(todo) {
+      console.log('add one');
       var view = new TodoView({model: todo});
       this.$("#todo-list").append(view.render().el);
     },
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
+        console.log('add all');
       Todos.each(this.addOne);
     },
 
